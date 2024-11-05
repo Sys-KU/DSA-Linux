@@ -6,6 +6,7 @@
 #include <linux/mempolicy.h>
 #include <linux/migrate_mode.h>
 #include <linux/hugetlb.h>
+#include <linux/dmaengine.h>
 
 typedef struct folio *new_folio_t(struct folio *folio, unsigned long private);
 typedef void free_folio_t(struct folio *folio, unsigned long private);
@@ -63,10 +64,17 @@ extern const char *migrate_reason_names[MR_TYPES];
 #ifdef CONFIG_MIGRATION
 
 void putback_movable_pages(struct list_head *l);
+int migrate_folio_extra_dsa(struct address_space *mapping, struct folio *dst,
+		struct folio *src, int extra_count);
 int migrate_folio_extra(struct address_space *mapping, struct folio *dst,
 		struct folio *src, enum migrate_mode mode, int extra_count);
+int migrate_folio_dsa(struct address_space *mapping, struct folio *dst,
+		struct folio *src, enum migrate_mode mode);
 int migrate_folio(struct address_space *mapping, struct folio *dst,
 		struct folio *src, enum migrate_mode mode);
+int migrate_pages_dsa(struct list_head *l, new_folio_t new, free_folio_t free,
+		unsigned long private, enum migrate_mode mode, int reason,
+		unsigned int *ret_succeeded);
 int migrate_pages(struct list_head *l, new_folio_t new, free_folio_t free,
 		  unsigned long private, enum migrate_mode mode, int reason,
 		  unsigned int *ret_succeeded);

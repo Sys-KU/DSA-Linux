@@ -161,6 +161,8 @@ const struct address_space_operations hfs_btree_aops = {
 	.write_begin	= hfs_write_begin,
 	.write_end	= generic_write_end,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 	.bmap		= hfs_bmap,
 	.release_folio	= hfs_release_folio,
 };
@@ -175,6 +177,8 @@ const struct address_space_operations hfs_aops = {
 	.direct_IO	= hfs_direct_IO,
 	.writepages	= hfs_writepages,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 };
 
 /*

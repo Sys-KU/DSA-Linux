@@ -4134,6 +4134,7 @@ const struct address_space_operations f2fs_dblock_aops = {
 	.write_end	= f2fs_write_end,
 	.dirty_folio	= f2fs_dirty_data_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 	.invalidate_folio = f2fs_invalidate_folio,
 	.release_folio	= f2fs_release_folio,
 	.bmap		= f2fs_bmap,

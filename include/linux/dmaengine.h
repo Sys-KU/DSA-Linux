@@ -1491,6 +1491,7 @@ struct dma_chan *dma_request_chan_by_mask(const dma_cap_mask_t *mask);
 
 void dma_release_channel(struct dma_chan *chan);
 int dma_get_slave_caps(struct dma_chan *chan, struct dma_slave_caps *caps);
+struct dma_chan *get_dsa_wq_channel(void);
 #else
 static inline struct dma_chan *dma_find_channel(enum dma_transaction_type tx_type)
 {
@@ -1531,6 +1532,10 @@ static inline int dma_get_slave_caps(struct dma_chan *chan,
 				     struct dma_slave_caps *caps)
 {
 	return -ENXIO;
+}
+static inline struct dma_chan *get_dsa_wq_channel(void);
+{
+	return NULL:
 }
 #endif
 
@@ -1577,6 +1582,10 @@ void dma_async_device_unregister(struct dma_device *device);
 int dma_async_device_channel_register(struct dma_device *device,
 				      struct dma_chan *chan);
 void dma_async_device_channel_unregister(struct dma_device *device,
+					 struct dma_chan *chan);
+int dma_async_device_channel_register_dsa(struct dma_device *device,
+				      struct dma_chan *chan);
+void dma_async_device_channel_unregister_dsa(struct dma_device *device,
 					 struct dma_chan *chan);
 void dma_run_dependencies(struct dma_async_tx_descriptor *tx);
 #define dma_request_channel(mask, x, y) \

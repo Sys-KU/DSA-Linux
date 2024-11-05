@@ -347,6 +347,8 @@ static const struct address_space_operations fat_aops = {
 	.direct_IO	= fat_direct_IO,
 	.bmap		= _fat_bmap,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 };
 
 /*

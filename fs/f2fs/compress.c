@@ -1843,6 +1843,7 @@ const struct address_space_operations f2fs_compress_aops = {
 	.release_folio = f2fs_release_folio,
 	.invalidate_folio = f2fs_invalidate_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 };
 
 struct address_space *COMPRESS_MAPPING(struct f2fs_sb_info *sbi)

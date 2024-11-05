@@ -375,5 +375,7 @@ const struct address_space_operations omfs_aops = {
 	.write_end = generic_write_end,
 	.bmap = omfs_bmap,
 	.migrate_folio = buffer_migrate_folio,
+	.migrate_folio_dsa = buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa = buffer_migrate_folio_finish_dsa,
 };
 

@@ -534,6 +534,8 @@ const struct address_space_operations ufs_aops = {
 	.write_begin = ufs_write_begin,
 	.write_end = ufs_write_end,
 	.migrate_folio = buffer_migrate_folio,
+	.migrate_folio_dsa = buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa = buffer_migrate_folio_finish_dsa,
 	.bmap = ufs_bmap
 };
 

@@ -463,6 +463,8 @@ const struct address_space_operations affs_aops = {
 	.write_end = affs_write_end,
 	.direct_IO = affs_direct_IO,
 	.migrate_folio = buffer_migrate_folio,
+	.migrate_folio_dsa = buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa = buffer_migrate_folio_finish_dsa,
 	.bmap = _affs_bmap
 };
 
@@ -841,6 +843,7 @@ const struct address_space_operations affs_aops_ofs = {
 	.write_begin = affs_write_begin_ofs,
 	.write_end = affs_write_end_ofs,
 	.migrate_folio = filemap_migrate_folio,
+	.migrate_folio_dsa = filemap_migrate_folio_dsa,
 };
 
 /* Free any preallocated blocks. */

@@ -52,12 +52,15 @@
 #include <linux/of_dma.h>
 #include <linux/mempool.h>
 #include <linux/numa.h>
+#include <uapi/linux/idxd.h>
+#include "idxd/idxd.h"
 
 #include "dmaengine.h"
 
 static DEFINE_MUTEX(dma_list_mutex);
 static DEFINE_IDA(dma_ida);
 static LIST_HEAD(dma_device_list);
+static LIST_HEAD(idxd_dma_chan_list);
 static long dmaengine_ref_count;
 
 /* --- debugfs implementation --- */
@@ -1100,6 +1103,31 @@ int dma_async_device_channel_register(struct dma_device *device,
 }
 EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
 
+int dma_async_device_channel_register_dsa(struct dma_device *device,
+				      struct dma_chan *chan)
+{
+	int rc;
+	struct idxd_dma_chan *idxd_chan;
+	struct idxd_device *idxd;
+	struct idxd_wq *wq;
+	rc = __dma_async_device_channel_register(device, chan);
+	if (rc < 0)
+		return rc;
+	dma_channel_rebalance();
+	idxd_chan = container_of(chan, struct idxd_dma_chan, chan);
+	wq = idxd_chan->wq;
+	idxd = wq->idxd;
+	
+	if(idxd->id == 0 && wq->id == 0) // temporary only wq0.0
+	{
+		list_add_tail_rcu(&idxd_chan->list, &idxd_dma_chan_list);
+		dma_get_slave_channel(chan);
+	}
+	
+	return 0;
+}
+EXPORT_SYMBOL_GPL(dma_async_device_channel_register_dsa);
+
 static void __dma_async_device_channel_unregister(struct dma_device *device,
 						  struct dma_chan *chan)
 {
@@ -1125,6 +1153,17 @@ void dma_async_device_channel_unregister(struct dma_device *device,
 	dma_channel_rebalance();
 }
 EXPORT_SYMBOL_GPL(dma_async_device_channel_unregister);
+
+void dma_async_device_channel_unregister_dsa(struct dma_device *device,
+					 struct dma_chan *chan)
+{
+	struct idxd_dma_chan *idxd_chan;
+	__dma_async_device_channel_unregister(device, chan);
+	dma_channel_rebalance();
+	idxd_chan = container_of(chan, struct idxd_dma_chan, chan);
+	list_del(&idxd_chan->list);
+}
+EXPORT_SYMBOL_GPL(dma_async_device_channel_unregister_dsa);
 
 /**
  * dma_async_device_register - registers DMA devices found
@@ -1599,3 +1638,14 @@ static int __init dma_bus_init(void)
 	return err;
 }
 arch_initcall(dma_bus_init);
+
+struct dma_chan *get_dsa_wq_channel(void)
+{
+	struct idxd_dma_chan *idxd_chan;
+	
+	if(list_empty(&idxd_dma_chan_list))
+		return NULL;
+	idxd_chan = list_first_entry(&idxd_dma_chan_list, struct idxd_dma_chan, list);
+	return &idxd_chan->chan;
+}
+EXPORT_SYMBOL_GPL(get_dsa_wq_channel);

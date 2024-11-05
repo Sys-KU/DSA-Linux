@@ -49,6 +49,7 @@ static struct idxd_driver_data idxd_driver_data[] = {
 		.evl_cr_off = offsetof(struct dsa_evl_entry, cr),
 		.cr_status_off = offsetof(struct dsa_completion_record, status),
 		.cr_result_off = offsetof(struct dsa_completion_record, result),
+		.load_device_defaults = idxd_load_dsa_device_defaults,
 	},
 	[IDXD_TYPE_IAX] = {
 		.name_prefix = "iax",

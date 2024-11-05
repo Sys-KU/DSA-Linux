@@ -58,6 +58,7 @@ const struct address_space_operations afs_file_aops = {
 	.release_folio	= netfs_release_folio,
 	.invalidate_folio = netfs_invalidate_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 	.writepages	= afs_writepages,
 };
 
@@ -66,6 +67,7 @@ const struct address_space_operations afs_symlink_aops = {
 	.release_folio	= netfs_release_folio,
 	.invalidate_folio = netfs_invalidate_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 };
 
 static const struct vm_operations_struct afs_vm_ops = {

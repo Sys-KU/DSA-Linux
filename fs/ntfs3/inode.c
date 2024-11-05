@@ -2109,6 +2109,8 @@ const struct address_space_operations ntfs_aops = {
 	.bmap		= ntfs_bmap,
 	.dirty_folio	= block_dirty_folio,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 	.invalidate_folio = block_invalidate_folio,
 };
 

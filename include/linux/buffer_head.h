@@ -283,9 +283,22 @@ extern int buffer_migrate_folio(struct address_space *,
 		struct folio *dst, struct folio *src, enum migrate_mode);
 extern int buffer_migrate_folio_norefs(struct address_space *,
 		struct folio *dst, struct folio *src, enum migrate_mode);
+extern int buffer_migrate_folio_dsa(struct address_space *,
+		struct folio *dst, struct folio *src, enum migrate_mode);
+extern int buffer_migrate_folio_norefs_dsa(struct address_space *,
+		struct folio *dst, struct folio *src, enum migrate_mode);
+extern void buffer_migrate_folio_finish_dsa(struct address_space *,
+		struct folio *dst, struct folio *src);
+extern void buffer_migrate_folio_norefs_finish_dsa(struct address_space *,
+		struct folio *dst, struct folio *src);
+
 #else
 #define buffer_migrate_folio NULL
 #define buffer_migrate_folio_norefs NULL
+#define buffer_migrate_folio_dsa NULL
+#define buffer_migrate_folio_norefs_dsa NULL
+#define buffer_migrate_folio_finish_dsa NULL
+#define buffer_migrate_folio_norefs_finish_dsa NULL
 #endif
 
 /*

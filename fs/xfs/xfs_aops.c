@@ -583,6 +583,7 @@ const struct address_space_operations xfs_address_space_operations = {
 	.invalidate_folio	= iomap_invalidate_folio,
 	.bmap			= xfs_vm_bmap,
 	.migrate_folio		= filemap_migrate_folio,
+	.migrate_folio_dsa		= filemap_migrate_folio_dsa,
 	.is_partially_uptodate  = iomap_is_partially_uptodate,
 	.error_remove_folio	= generic_error_remove_folio,
 	.swap_activate		= xfs_iomap_swapfile_activate,

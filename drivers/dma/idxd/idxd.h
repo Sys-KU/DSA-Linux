@@ -190,6 +190,9 @@ enum idxd_op_type {
 struct idxd_dma_chan {
 	struct dma_chan chan;
 	struct idxd_wq *wq;
+
+	// FOR DSA channel pool
+	struct list_head list;
 };
 
 struct idxd_wq {
@@ -733,6 +736,7 @@ void idxd_wqs_quiesce(struct idxd_device *idxd);
 bool idxd_queue_int_handle_resubmit(struct idxd_desc *desc);
 void multi_u64_to_bmap(unsigned long *bmap, u64 *val, int count);
 int idxd_load_iaa_device_defaults(struct idxd_device *idxd);
+int idxd_load_dsa_device_defaults(struct idxd_device *idxd);
 
 /* device interrupt control */
 irqreturn_t idxd_misc_thread(int vec, void *data);

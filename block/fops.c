@@ -468,6 +468,8 @@ const struct address_space_operations def_blk_aops = {
 	.write_begin	= blkdev_write_begin,
 	.write_end	= blkdev_write_end,
 	.migrate_folio	= buffer_migrate_folio_norefs,
+	.migrate_folio_dsa	= buffer_migrate_folio_norefs_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_norefs_finish_dsa,
 	.is_dirty_writeback = buffer_check_dirty_writeback,
 };
 #else /* CONFIG_BUFFER_HEAD */
@@ -517,6 +519,7 @@ const struct address_space_operations def_blk_aops = {
 	.is_partially_uptodate  = iomap_is_partially_uptodate,
 	.error_remove_folio	= generic_error_remove_folio,
 	.migrate_folio		= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 };
 #endif /* CONFIG_BUFFER_HEAD */
 

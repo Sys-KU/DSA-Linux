@@ -2132,6 +2132,19 @@ int nfs_migrate_folio(struct address_space *mapping, struct folio *dst,
 
 	return migrate_folio(mapping, dst, src, mode);
 }
+int nfs_migrate_folio_dsa(struct address_space *mapping, struct folio *dst,
+		struct folio *src, enum migrate_mode mode)
+{
+	if(folio_test_private(src))
+		return -EBUSY; 
+	if (folio_test_fscache(src)) {
+		if (mode == MIGRATE_ASYNC)
+			return -EBUSY;
+		folio_wait_fscache(src);
+	}
+	
+	return migrate_folio_dsa(mapping, dst, src, mode);
+}
 #endif
 
 int __init nfs_init_writepagecache(void)

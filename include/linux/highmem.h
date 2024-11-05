@@ -329,6 +329,21 @@ static inline void copy_highpage(struct page *to, struct page *from)
 	kunmap_local(vfrom);
 }
 
+static inline void copy_only_kmsan_dsa(struct page *to, struct page *from)
+{
+	kmsan_copy_page_meta(to, from);
+}
+
+static inline void copy_highpage_only_page_dsa(struct page *to, struct page *from)
+{
+	char *vfrom, *vto;
+
+	vfrom = kmap_local_page(from);
+	vto = kmap_local_page(to);
+	copy_page(vto, vfrom);	
+	kunmap_local(vto);
+	kunmap_local(vfrom);
+}
 #endif
 
 #ifdef copy_mc_to_kernel

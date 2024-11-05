@@ -356,6 +356,8 @@ const struct address_space_operations jfs_aops = {
 	.bmap		= jfs_bmap,
 	.direct_IO	= jfs_direct_IO,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 };
 
 /*

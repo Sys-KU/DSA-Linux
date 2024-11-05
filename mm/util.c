@@ -811,6 +811,35 @@ void folio_copy(struct folio *dst, struct folio *src)
 }
 EXPORT_SYMBOL(folio_copy);
 
+void folio_copy_kmsan_dsa(struct folio *dst, struct folio *src)
+{
+	long i = 0;
+	long nr = folio_nr_pages(src);
+
+	for (;;) {
+		copy_only_kmsan_dsa(folio_page(dst, i), folio_page(src, i));
+		if (++i == nr)
+			break;
+		cond_resched();
+	}
+}
+EXPORT_SYMBOL(folio_copy_kmsan_dsa);
+
+void folio_copy_only_page_dsa(struct folio *dst, struct folio *src)
+{
+	long i = 0;
+	long nr = folio_nr_pages(src);
+
+	for (;;) {
+		copy_highpage_only_page_dsa(folio_page(dst, i), folio_page(src, i));
+		if (++i == nr)
+			break;
+		cond_resched();
+	}
+}
+EXPORT_SYMBOL(folio_copy_only_page_dsa);
+
+
 int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
 int sysctl_overcommit_ratio __read_mostly = 50;
 unsigned long sysctl_overcommit_kbytes __read_mostly;

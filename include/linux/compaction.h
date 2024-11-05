@@ -82,6 +82,9 @@ static inline unsigned long compact_gap(unsigned int order)
 
 #ifdef CONFIG_COMPACTION
 
+#define NR_COMPACTION_PAGES 512
+#define NR_LEAST_DSA_MEMCPY_PAGES 32
+
 extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
 extern int fragmentation_index(struct zone *zone, unsigned int order);
 extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,

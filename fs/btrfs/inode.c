@@ -7980,6 +7980,14 @@ static int btrfs_migrate_folio(struct address_space *mapping,
 
 	return MIGRATEPAGE_SUCCESS;
 }
+static void btrfs_migrate_folio_finish_dsa(struct address_space *mapping,
+			     struct folio *dst, struct folio *src) 
+{
+	if (folio_test_ordered(src)) {
+		folio_clear_ordered(src);
+		folio_set_ordered(dst);
+	}	
+}
 #else
 #define btrfs_migrate_folio NULL
 #endif
@@ -11035,6 +11043,8 @@ static const struct address_space_operations btrfs_aops = {
 	.invalidate_folio = btrfs_invalidate_folio,
 	.release_folio	= btrfs_release_folio,
 	.migrate_folio	= btrfs_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= btrfs_migrate_folio_finish_dsa, 
 	.dirty_folio	= filemap_dirty_folio,
 	.error_remove_folio = generic_error_remove_folio,
 	.swap_activate	= btrfs_swap_activate,

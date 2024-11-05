@@ -5171,6 +5171,7 @@ const struct address_space_operations cifs_addr_ops = {
 	.invalidate_folio = cifs_invalidate_folio,
 	.launder_folio = cifs_launder_folio,
 	.migrate_folio = filemap_migrate_folio,
+	.migrate_folio_dsa = filemap_migrate_folio_dsa,
 	/*
 	 * TODO: investigate and if useful we could add an is_dirty_writeback
 	 * helper if needed
@@ -5194,4 +5195,5 @@ const struct address_space_operations cifs_addr_ops_smallbuf = {
 	.invalidate_folio = cifs_invalidate_folio,
 	.launder_folio = cifs_launder_folio,
 	.migrate_folio = filemap_migrate_folio,
+	.migrate_folio_dsa = filemap_migrate_folio_dsa,
 };

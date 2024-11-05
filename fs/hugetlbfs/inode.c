@@ -1136,6 +1136,24 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
 
 	return MIGRATEPAGE_SUCCESS;
 }
+static int hugetlbfs_migrate_folio_dsa(struct address_space *mapping,
+				struct folio *dst, struct folio *src,
+				enum migrate_mode mode)
+{
+	int rc;
+
+	rc = migrate_huge_page_move_mapping(mapping, dst, src);
+	if (rc != MIGRATEPAGE_SUCCESS)
+		return rc;
+
+	if (hugetlb_folio_subpool(src)) {
+		hugetlb_set_folio_subpool(dst,
+					hugetlb_folio_subpool(src));
+		hugetlb_set_folio_subpool(src, NULL);
+	}
+
+	return rc;
+}
 #else
 #define hugetlbfs_migrate_folio NULL
 #endif
@@ -1288,6 +1306,7 @@ static const struct address_space_operations hugetlbfs_aops = {
 	.write_end	= hugetlbfs_write_end,
 	.dirty_folio	= noop_dirty_folio,
 	.migrate_folio  = hugetlbfs_migrate_folio,
+	.migrate_folio_dsa  = hugetlbfs_migrate_folio_dsa,
 	.error_remove_folio	= hugetlbfs_error_remove_folio,
 };
 

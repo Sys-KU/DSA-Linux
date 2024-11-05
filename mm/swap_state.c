@@ -34,6 +34,7 @@ static const struct address_space_operations swap_aops = {
 	.dirty_folio	= noop_dirty_folio,
 #ifdef CONFIG_MIGRATION
 	.migrate_folio	= migrate_folio,
+	.migrate_folio_dsa	= migrate_folio_dsa,
 #endif
 };
 

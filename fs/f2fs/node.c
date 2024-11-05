@@ -2187,6 +2187,7 @@ const struct address_space_operations f2fs_node_aops = {
 	.invalidate_folio = f2fs_invalidate_folio,
 	.release_folio	= f2fs_release_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 };
 
 static struct free_nid *__lookup_free_nid_list(struct f2fs_nm_info *nm_i,

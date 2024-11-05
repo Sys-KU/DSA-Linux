@@ -4469,6 +4469,7 @@ const struct address_space_operations shmem_aops = {
 #endif
 #ifdef CONFIG_MIGRATION
 	.migrate_folio	= migrate_folio,
+	.migrate_folio_dsa	= migrate_folio_dsa,
 #endif
 	.error_remove_folio = shmem_error_remove_folio,
 };

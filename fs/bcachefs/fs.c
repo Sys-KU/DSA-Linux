@@ -1129,6 +1129,7 @@ static const struct address_space_operations bch_address_space_operations = {
 	.direct_IO	= noop_direct_IO,
 #ifdef CONFIG_MIGRATION
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 #endif
 	.error_remove_folio = generic_error_remove_folio,
 };

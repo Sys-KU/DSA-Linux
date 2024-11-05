@@ -332,6 +332,8 @@ const struct address_space_operations udf_aops = {
 	.direct_IO	= udf_direct_IO,
 	.bmap		= udf_bmap,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 };
 
 /*

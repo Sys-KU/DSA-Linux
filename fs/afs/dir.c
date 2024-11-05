@@ -78,6 +78,7 @@ const struct address_space_operations afs_dir_aops = {
 	.release_folio	= afs_dir_release_folio,
 	.invalidate_folio = afs_dir_invalidate_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 };
 
 const struct dentry_operations afs_fs_dentry_operations = {

@@ -196,6 +196,8 @@ const struct address_space_operations bfs_aops = {
 	.write_begin	= bfs_write_begin,
 	.write_end	= generic_write_end,
 	.migrate_folio	= buffer_migrate_folio,
+	.migrate_folio_dsa	= buffer_migrate_folio_dsa,
+	.migrate_folio_finish_dsa	= buffer_migrate_folio_finish_dsa,
 	.bmap		= bfs_bmap,
 };
 

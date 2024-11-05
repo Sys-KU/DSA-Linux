@@ -491,6 +491,16 @@ static int btree_migrate_folio(struct address_space *mapping,
 		return -EAGAIN;
 	return migrate_folio(mapping, dst, src, mode);
 }
+static int btree_migrate_folio_dsa(struct address_space *mapping,
+		struct folio *dst, struct folio *src, enum migrate_mode mode)
+{
+	if (folio_test_dirty(src))
+		return -EAGAIN;
+	if (folio_get_private(src) &&
+	    !filemap_release_folio(src, GFP_KERNEL))
+		return -EAGAIN;
+	return migrate_folio_dsa(mapping, dst, src, mode);
+}
 #else
 #define btree_migrate_folio NULL
 #endif
@@ -598,6 +608,7 @@ static const struct address_space_operations btree_aops = {
 	.release_folio	= btree_release_folio,
 	.invalidate_folio = btree_invalidate_folio,
 	.migrate_folio	= btree_migrate_folio,
+	.migrate_folio_dsa	= btree_migrate_folio_dsa,
 	.dirty_folio	= btree_dirty_folio,
 };
 

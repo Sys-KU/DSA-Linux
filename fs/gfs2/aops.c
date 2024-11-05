@@ -744,6 +744,7 @@ static const struct address_space_operations gfs2_aops = {
 	.invalidate_folio = iomap_invalidate_folio,
 	.bmap = gfs2_bmap,
 	.migrate_folio = filemap_migrate_folio,
+	.migrate_folio_dsa = filemap_migrate_folio_dsa,
 	.is_partially_uptodate = iomap_is_partially_uptodate,
 	.error_remove_folio = generic_error_remove_folio,
 };

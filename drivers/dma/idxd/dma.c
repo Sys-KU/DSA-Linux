@@ -269,14 +269,16 @@ static int idxd_register_dma_channel(struct idxd_wq *wq)
 		desc->txd.tx_submit = idxd_dma_tx_submit;
 	}
 
-	rc = dma_async_device_channel_register(dma, chan);
+
+	wq->idxd_chan = idxd_chan;
+	idxd_chan->wq = wq;
+
+	rc = dma_async_device_channel_register_dsa(dma, chan);
 	if (rc < 0) {
 		kfree(idxd_chan);
 		return rc;
 	}
 
-	wq->idxd_chan = idxd_chan;
-	idxd_chan->wq = wq;
 	get_device(wq_confdev(wq));
 
 	return 0;
@@ -288,7 +290,7 @@ static void idxd_unregister_dma_channel(struct idxd_wq *wq)
 	struct dma_chan *chan = &idxd_chan->chan;
 	struct idxd_dma_dev *idxd_dma = wq->idxd->idxd_dma;
 
-	dma_async_device_channel_unregister(&idxd_dma->dma, chan);
+	dma_async_device_channel_unregister_dsa(&idxd_dma->dma, chan);
 	list_del(&chan->device_node);
 	kfree(wq->idxd_chan);
 	wq->idxd_chan = NULL;

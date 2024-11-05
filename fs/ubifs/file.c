@@ -1649,6 +1649,7 @@ const struct address_space_operations ubifs_file_address_operations = {
 	.invalidate_folio = ubifs_invalidate_folio,
 	.dirty_folio	= ubifs_dirty_folio,
 	.migrate_folio	= filemap_migrate_folio,
+	.migrate_folio_dsa	= filemap_migrate_folio_dsa,
 	.release_folio	= ubifs_release_folio,
 };
 
